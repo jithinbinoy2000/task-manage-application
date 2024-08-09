@@ -29,7 +29,7 @@ const projectSchema = new mongoose.Schema({
         type:String,
         require:true
     },
-    projectDiscription:{
+    projectDescription:{
         type:String,
         require:true
     },

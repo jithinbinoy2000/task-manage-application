@@ -52,16 +52,23 @@ exports.editProject = async (request, response) => {
 };
 
 //delete Project
-exports.deleteProject = async (request, response) => {
-    const projectId = request.params.id; 
+exports.deleteProject = async (req, res) => {
+    const projectId = req.params.projectId;
+
+    if (!projectId) {
+        return res.status(400).json({ status: 400, message: 'Project ID is required' });
+    }
+
     try {
         const deletedProject = await projects.findByIdAndDelete(projectId);
+
         if (deletedProject) {
-            response.status(200).json({ status: 200, message: 'Project Deleted Successfully' });
+            res.status(200).json({ status: 200, message: 'Project Deleted Successfully' });
         } else {
-            response.status(404).json({ status: 404, message: 'Project Not Found' });
+            res.status(404).json({ status: 404, message: 'Project Not Found' });
         }
     } catch (error) {
-        response.status(500).json({ status: 500, message: 'Server Error', error });
+        console.error('Error deleting project:', error); // Log the full error
+        res.status(500).json({ status: 500, message: 'Server Error', error });
     }
 };
